@@ -38,6 +38,14 @@ struct vector2i {
 	int y;
 };
 
+struct matrix_3x3 {
+	double mas[9];
+};
+
 void DrawTriangle(triangled tr, CHAR_INFO* buf, int size_x, int size_y, double fov);
 void FillConsole(CHAR_INFO* buf, int size_x, int size_y);
 void DrawLine(CHAR_INFO* buf, int size_x, int size_y, vector2d p1, vector2d p2);
+matrix_3x3 Create_Simple_Rotation(double angle, vector3i axis);
+void Move_Mesh(triangled* tris, int size, vector3d movement);
+
+vector3d operator *(matrix_3x3 mat, vector3d vec);

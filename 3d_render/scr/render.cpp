@@ -84,3 +84,73 @@ void DrawLine(CHAR_INFO* buf, int size_x, int size_y, vector2d p1, vector2d p2) 
 		}
 	}
 }
+
+matrix_3x3 Create_Simple_Rotation(double angle, vector3i axis) {
+	matrix_3x3 output;
+	if (axis.x == 1) {
+		output.mas[0] = 1;
+		output.mas[3] = 0;
+		output.mas[6] = 0;
+
+		output.mas[1] = 0;
+		output.mas[4] = cos(M_PI * angle / 180.0);
+		output.mas[7] = sin(M_PI * angle / 180.0);
+
+		output.mas[2] = 0;
+		output.mas[5] = -sin(M_PI * angle / 180.0);
+		output.mas[8] = cos(M_PI * angle / 180.0);
+	}
+
+	else if (axis.y == 1) {
+		output.mas[0] = cos(M_PI * angle / 180.0);
+		output.mas[3] = 0;
+		output.mas[6] = sin(M_PI * angle / 180.0);
+
+		output.mas[1] = 0;
+		output.mas[4] = 1;
+		output.mas[7] = 0;
+
+		output.mas[2] = -sin(M_PI * angle / 180.0);
+		output.mas[5] = 0;
+		output.mas[8] = cos(M_PI * angle / 180.0);
+	}
+
+	else if (axis.z == 1) {
+		output.mas[0] = cos(M_PI * angle / 180.0);
+		output.mas[3] = -sin(M_PI * angle / 180.0);
+		output.mas[6] = 0;
+
+		output.mas[1] = sin(M_PI * angle / 180.0);
+		output.mas[4] = cos(M_PI * angle / 180.0);
+		output.mas[7] = 0;
+
+		output.mas[2] = 0;
+		output.mas[5] = 0;
+		output.mas[8] = 1;
+	}
+	return output;
+}
+
+void Move_Mesh(triangled* tris, int size, vector3d movement) {
+	for (int i = 0; i < size; ++i) {
+		tris[i].p1.x += movement.x;
+		tris[i].p1.y += movement.y;
+		tris[i].p1.z += movement.z;
+
+		tris[i].p2.x += movement.x;
+		tris[i].p2.y += movement.y;
+		tris[i].p2.z += movement.z;
+
+		tris[i].p3.x += movement.x;
+		tris[i].p3.y += movement.y;
+		tris[i].p3.z += movement.z;
+	}
+}
+
+vector3d operator *(matrix_3x3 mat, vector3d vec) {
+	vector3d output;
+	output.x = mat.mas[0] * vec.x + mat.mas[1] * vec.y + mat.mas[2] * vec.z;
+	output.y = mat.mas[3] * vec.x + mat.mas[4] * vec.y + mat.mas[5] * vec.z;
+	output.z = mat.mas[6] * vec.x + mat.mas[7] * vec.y + mat.mas[8] * vec.z;
+	return output;
+}

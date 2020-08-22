@@ -25,22 +25,67 @@ int main() {
 	SetConsoleWindowInfo(hwnd, TRUE, &m_react);
 
 	CHAR_INFO* buffer = new CHAR_INFO[WIDTH * HEIGHT];
-	triangled tri;
-	tri.p1.x = 0.5;
-	tri.p1.y = 0.5;
-	tri.p1.z = 1;
-	tri.p2.x = 0.25;
-	tri.p2.y = 0.25;
-	tri.p2.z = 1;
-	tri.p3.x = 0.75;
-	tri.p3.y = 0.25;
-	tri.p3.z = 2;
+	triangled tris[8];
+	triangled tris1[8];
+
+	tris[0].p1 = { -0.35,-0.25,-0.5 };
+	tris[0].p2 = { 0.35,-0.25,-0.5 };
+	tris[0].p3 = { 0.35,0.25,-0.5 };
+
+	tris[1].p1 = { -0.35,-0.25,-0.5 };
+	tris[1].p2 = { 0.35,0.25,-0.5 };
+	tris[1].p3 = { -0.35,0.25,-0.5 };
+
+	tris[2].p1 = { -0.35,-0.25,0.5 };
+	tris[2].p2 = { -0.35,-0.25,-0.5 };
+	tris[2].p3 = { -0.35,0.25,-0.5 };
+
+	tris[3].p1 = { -0.35,-0.25,0.5 };
+	tris[3].p2 = { -0.35,0.25,-0.5 };
+	tris[3].p3 = { -0.35,0.25,0.5 };
+
+	tris[4].p1 = { 0.35,-0.25,-0.5 };
+	tris[4].p2 = { 0.35,-0.25,0.5 };
+	tris[4].p3 = { 0.35,0.25,-0.5 };
+
+	tris[5].p1 = { 0.35,0.25,-0.5 };
+	tris[5].p2 = { 0.35,-0.25,0.5 };
+	tris[5].p3 = { 0.35,0.25,0.5 };
+
+	tris[6].p1 = { 0.35,-0.25,0.5 };
+	tris[6].p2 = { -0.35,-0.25,0.5 };
+	tris[6].p3 = { -0.35,0.25,0.5 };
+
+	tris[7].p1 = { 0.35,-0.25,0.5 };
+	tris[7].p2 = { -0.35,0.25,0.5 };
+	tris[7].p3 = { 0.35,0.25,0.5 };
+
+
+	
 
 	FillConsole(buffer, WIDTH, HEIGHT);
-	DrawTriangle(tri, buffer, WIDTH, HEIGHT, 90.0);
+
+	double angle = 0.0;
+
 
 	while (true) {
+		matrix_3x3 rot = Create_Simple_Rotation(angle, { 0,0,1 });
+
+		for (int i = 0; i < 8; ++i) {
+			tris1[i].p1 = rot * tris[i].p1;
+			tris1[i].p2 = rot * tris[i].p2;
+			tris1[i].p3 = rot * tris[i].p3;
+		}
+		Move_Mesh(tris1, 8, { 1.0,0.8,2.0 });
+
+		for (int i = 0; i < 8; ++i) {
+			DrawTriangle(tris1[i], buffer, WIDTH, HEIGHT, 90.0);
+		}
+
 		WriteConsoleOutputA(hwnd, buffer, { (short)WIDTH,(short)HEIGHT }, { 0,0 }, &m_react);
+		FillConsole(buffer, WIDTH, HEIGHT);
+
+		angle += 1;
 	}
 
 }
