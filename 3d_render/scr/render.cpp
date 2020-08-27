@@ -9,7 +9,7 @@ void DrawTriangle(triangle4d tr, CHAR_INFO* buf, int size_x, int size_y) {
 	tri.p2 = { tr.p2.x / tr.p2.w,tr.p2.y / tr.p2.w,tr.p2.z / tr.p2.w };
 	tri.p3 = { tr.p3.x / tr.p3.w,tr.p3.y / tr.p3.w,tr.p3.z / tr.p3.w };
 
-	Move_Mesh(&tri, 1, { 1.0,1.0,1.0 });
+	Move_Mesh(&tri, 1, { 1.0,1.0,0.0 });
 
 	vector2d p1;
 	vector2d p2;
@@ -150,7 +150,7 @@ matrix_4x4 Create_Simple_Rotation(double angle, vector3i axis) {
 		output.mas[2] = 0;
 		output.mas[6] = 0;
 		output.mas[10] = 1;
-		output.mas[14] - 0;
+		output.mas[14] = 0;
 
 		output.mas[3] = 0;
 		output.mas[7] = 0;
@@ -220,7 +220,33 @@ matrix_4x4 Create_Veiw() {
 
 	output.mas[3] = 0;
 	output.mas[7] = 0;
-	output.mas[11] = 3;
+	output.mas[11] = 5;
+	output.mas[15] = 1;
+
+	return output;
+}
+
+matrix_4x4 Create_Identity() {
+	matrix_4x4 output;
+
+	output.mas[0] = 1;
+	output.mas[4] = 0;
+	output.mas[8] = 0;
+	output.mas[12] = 0;
+
+	output.mas[1] = 0;
+	output.mas[5] = 1;
+	output.mas[9] = 0;
+	output.mas[13] = 0;
+
+	output.mas[2] = 0;
+	output.mas[6] = 0;
+	output.mas[10] = 1;
+	output.mas[14] = 0;
+
+	output.mas[3] = 0;
+	output.mas[7] = 0;
+	output.mas[11] = 0;
 	output.mas[15] = 1;
 
 	return output;
@@ -232,5 +258,17 @@ vector4d operator *(matrix_4x4 mat, vector4d vec) {
 	output.y = mat.mas[4] * vec.x + mat.mas[5] * vec.y + mat.mas[6] * vec.z + mat.mas[7] * vec.w;
 	output.z = mat.mas[8] * vec.x + mat.mas[9] * vec.y + mat.mas[10] * vec.z + mat.mas[11] * vec.w;
 	output.w = mat.mas[12] * vec.x + mat.mas[13] * vec.y + mat.mas[14] * vec.z + mat.mas[15] * vec.w;
+	return output;
+}
+
+matrix_4x4 operator *(matrix_4x4 mat1, matrix_4x4 mat2) {
+	matrix_4x4 output;
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			output.mas[i * 4 + j] = mat1.mas[i * 4 + 0] * mat2.mas[0 * 4 + j] + mat1.mas[i * 4 + 1] * mat2.mas[1 * 4 + j] + mat1.mas[i * 4 + 2] * mat2.mas[2 * 4 + j] + mat1.mas[i * 4 + 3] * mat2.mas[3 * 4 + j];
+		}
+	}
+
 	return output;
 }

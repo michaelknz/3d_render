@@ -77,7 +77,9 @@ void FillConsole(CHAR_INFO* buf, int size_x, int size_y);
 void DrawLine(CHAR_INFO* buf, int size_x, int size_y, vector2d p1, vector2d p2);
 matrix_4x4 Create_Simple_Rotation(double angle, vector3i axis);
 matrix_4x4 Create_Projection(double asp, double fov, double znear, double zfar);
+matrix_4x4 Create_Identity();
 matrix_4x4 Create_Veiw();
 void Move_Mesh(triangle3d* tris, int size, vector3d movement);
 
 vector4d operator *(matrix_4x4 mat, vector4d vec);
+matrix_4x4 operator *(matrix_4x4 mat1, matrix_4x4 mat2);
