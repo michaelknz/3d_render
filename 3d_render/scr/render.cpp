@@ -179,23 +179,23 @@ void Move_Mesh(triangle3d* tris, int size, vector3d movement) {
 matrix_4x4 Create_Projection(double asp, double fov, double znear, double zfar) {
 	matrix_4x4 output;
 	output.mas[0] = 1 / (tan(M_PI * fov / 360.0) * asp);
-	output.mas[4] = 0;
-	output.mas[8] = 0;
-	output.mas[12] = 0;
-
 	output.mas[1] = 0;
-	output.mas[5] = 1 / (tan(M_PI * fov / 360.0));
-	output.mas[9] = 0;
-	output.mas[13] = 0;
-
 	output.mas[2] = 0;
-	output.mas[6] = 0;
-	output.mas[10] = (zfar + znear) / (zfar - znear);
-	output.mas[14] = (-2 * zfar * znear) / (zfar - znear);
-
 	output.mas[3] = 0;
+
+	output.mas[4] = 0;
+	output.mas[5] = 1 / (tan(M_PI * fov / 360.0));
+	output.mas[6] = 0;
 	output.mas[7] = 0;
-	output.mas[11] = 1;
+
+	output.mas[8] = 0;
+	output.mas[9] = 0;
+	output.mas[10] = (zfar + znear) / (zfar - znear);
+	output.mas[11] = (-2 * zfar * znear) / (zfar - znear);
+
+	output.mas[12] = 0;
+	output.mas[13] = 0;
+	output.mas[14] = 1;
 	output.mas[15] = 0;
 
 	return output;
@@ -220,7 +220,7 @@ matrix_4x4 Create_Veiw() {
 
 	output.mas[3] = 0;
 	output.mas[7] = 0;
-	output.mas[11] = 5;
+	output.mas[11] = 2;
 	output.mas[15] = 1;
 
 	return output;

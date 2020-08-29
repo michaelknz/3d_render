@@ -88,7 +88,7 @@ int main() {
 		WriteConsoleOutputA(hwnd, buffer, { (short)WIDTH,(short)HEIGHT }, { 0,0 }, &m_react);
 		FillConsole(buffer, WIDTH, HEIGHT);
 
-		angle += 1;
+		angle -= 1;
 	}
 
 }
